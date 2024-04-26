@@ -1,3 +1,3 @@
 # IM2-SBB
 
-Hier kommt eine Dokumentation über 
+Hier kommt eine Dokumentation über das Projekt
