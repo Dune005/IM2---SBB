@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SBB API</title>
+    <title>Zugverbindungen in der Schweiz</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Hier steht der Haupttitel</h1>
-    </header>
+    <h1>Zugverbindungen in der Schweiz</h1>
+    <form id="trainForm" class="search-field">
+        <label for="from">Abfahrtsort:</label>
+        <input type="text" id="from" name="from" required>
+        <label for="to">Zielort:</label>
+        <input type="text" id="to" name="to" required>
+        <button type="submit">Suche</button>
+    </form>
+    <div id="results"></div> <!-- Container für die Ergebnisse -->
 
-    <main>
-
-
-
-
-    </main>
-
-
-    <script src="js/script_AT.js"></script>
-    <script src="js/script_CR.js"></script>
-    <script src="js/script_SK.js"></script>    
+    <script src="/js/script.js"></script>
 </body>
 </html>
