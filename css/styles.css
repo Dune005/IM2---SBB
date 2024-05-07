@@ -1,6 +1,6 @@
 #results {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
 }
 
@@ -41,8 +41,8 @@
 .connection {
     border: 1px solid #ccc;
     display: flex;
+    flex-direction: column;
     padding: 10px;
-    flex-wrap: wrap;
     justify-content: space-between;
     border-radius: 8px;
     background-color: #f9f9f9;

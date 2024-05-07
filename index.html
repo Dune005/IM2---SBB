@@ -11,9 +11,13 @@
     <h1>Zugverbindungen in der Schweiz</h1>
     <form id="trainForm" class="search-field">
         <label for="from">Abfahrtsort:</label>
-        <input type="text" id="from" name="from" required>
+        <input type="text" id="from" name="from" required autocomplete="off">
+        <div id="from-suggestions" class="suggestions-container"></div> <!-- Container für Vorschläge des Abfahrtsorts -->
+
         <label for="to">Zielort:</label>
-        <input type="text" id="to" name="to" required>
+        <input type="text" id="to" name="to" required autocomplete="off">
+        <div id="to-suggestions" class="suggestions-container"></div> <!-- Container für Vorschläge des Zielorts -->
+
         <button type="submit">Suche</button>
     </form>
     <div id="results"></div> <!-- Container für die Ergebnisse -->
