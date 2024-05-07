@@ -18,8 +18,16 @@
         <input type="text" id="to" name="to" required autocomplete="off">
         <div id="to-suggestions" class="suggestions-container"></div> <!-- Container für Vorschläge des Zielorts -->
 
-        <button type="submit">Suche</button>
+
+        <!-- Das ist die Abfahrtszeit mit Kalender -->
+        <label for="datetime">Abfahrtszeit:</label>
+        <input type="datetime-local" id="datetime" name="datetime">
+        <button onclick="submitDateTime()">Absenden</button>
+
     </form>
+
+
+
     <div id="results"></div> <!-- Container für die Ergebnisse -->
 
     <script src="/js/script.js"></script>
