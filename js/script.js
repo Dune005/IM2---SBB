@@ -20,9 +20,7 @@ document.getElementById('trainForm').addEventListener('submit', function(event) 
 
 async function getTrainConnections(from, to, datetime) {
     //muss gelöscht werden damit die Abfrage funktioniert
-    from = "wittenbach zentrum";
-    to = "Bern";
-
+   
     // get date from datetime
     console.log(datetime);
     let params = {};
@@ -190,26 +188,66 @@ async function updateSuggestions(input, suggestionsContainerId) {
 
 
 
-// Get the input element
-var input = document.getElementById("from");
+// Get the input element for "from"
+var inputFrom = document.getElementById("from");
 
-// Add event listener for input event
-input.addEventListener("input", function() {
-  if (input.value.trim().length > 0) { // Check if input has some text
-    showPopup();
+hidePopup("popup1");
+hidePopup("popup2");
+
+// Add event listener for input event for "from"
+inputFrom.addEventListener("input", function() {
+  if (inputFrom.value.trim().length > 1) { // Check if input has some text
+    showPopup("popup1");
   } else {
-    hidePopup();
+    hidePopup("popup1");
+    hidePopup("popup2");
   }
 });
 
-function showPopup() {
-  var popup = document.querySelector(".popup");
-  popup.style.display = "block";
+// Get the input element for "from"
+var inputTo = document.getElementById("to");
+
+// Add event listener for input event for "from"
+inputTo.addEventListener("input", function() {
+  if (inputTo.value.trim().length > 1) { // Check if input has some text
+    showPopup("popup2");
+  } else {
+    hidePopup("popup1");
+    hidePopup("popup2");
+  }
+});
+
+
+function showPopup(popupId) {
+    var popup = document.getElementById(popupId);
+    popup.style.display = "block";
+
+    // Get the input element
+    var input = document.getElementById(popupId === "popup1" ? "from" : "to");
+    var rect = input.getBoundingClientRect(); // Get the position of the input element relative to the viewport
+
+    // Adjust the top position of the pop-up
+    popup.style.top = rect.bottom + window.pageYOffset + "px";
+
+    // Add event listener to the input field within the popup
+    /*
+    var inputField = document.getElementById("#"+inputId);
+    inputField.addEventListener("click", function() {
+        console.log("adfasdf");
+        // Hide the respective popup and close button when something is selected
+        hidePopup(popupId);
+    });
+    */
+
+    var dropdownMenu = document.getElementById(popupId);
+        dropdownMenu.addEventListener("click", function() {
+        hidePopup(popupId);
+    });
 }
 
-function hidePopup() {
-  var popup = document.querySelector(".popup");
-  popup.style.display = "none";
+function hidePopup(popupId) {
+    var popup = document.getElementById(popupId);
+    popup.style.display = "none";
 }
 
 

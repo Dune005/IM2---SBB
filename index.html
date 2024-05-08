@@ -19,17 +19,20 @@
 
     <form id="trainForm" class="search-field">
         <label class="boxtext" for="from">Do besch</label>
-<input type="text" id="from" name="from" autocomplete="off">
-<div id="popup" class="popup">
-  <span class="close" onclick="hidePopup()">&times;</span>
-  <div id="from-suggestions" class="suggestions-container"></div>
-</div>
+<input type="text" id="from" name="from" required autocomplete="off">
+<div id="popup1" class="popup">
+    <span class="close" onclick="hidePopup('popup1')"></span>
+    <div id="from-suggestions" class="suggestions-container"></div>
+  </div>
        
         
         
         <label class="boxtext" for="to">Do muesch hie</label>
-<input type="text" id="to" name="to"  autocomplete="off">
-<!-- vor autocomplete muss wieder recuired rein -->
+<input type="text" id="to" name="to" required autocomplete="off">
+<div id="popup2" class="popup">
+    <span class="close" onclick="hidePopup('popup2')"></span>
+    <div id="to-suggestions" class="suggestions-container"></div>
+  </div>
 
 <!-- <div id="popup" class="popup">
     <span class="close" onclick="hidePopup()">&times;</span>
@@ -40,7 +43,7 @@
         <!-- Das ist die Abfahrtszeit mit Kalender -->
         <label class="boxtext" for="datetime">Denn gasch los</label>
         <input type="datetime-local" id="datetime" name="datetime">
-        <button id="button">Absenden</button>
+        <button id="button" class="button-80">Suech</button>
 
     </form>
 </div>
