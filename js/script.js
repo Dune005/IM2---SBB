@@ -155,6 +155,29 @@ async function updateSuggestions(input, suggestionsContainerId) {
 
 
 
+// Get the input element
+var input = document.getElementById("from");
+
+// Add event listener for input event
+input.addEventListener("input", function() {
+  if (input.value.trim().length > 0) { // Check if input has some text
+    showPopup();
+  } else {
+    hidePopup();
+  }
+});
+
+function showPopup() {
+  var popup = document.querySelector(".popup");
+  popup.style.display = "block";
+}
+
+function hidePopup() {
+  var popup = document.querySelector(".popup");
+  popup.style.display = "none";
+}
+
+
 // async function getTrainConnections(from, to) {
 //     try {
 //         const response = await axios.get(`https://transport.opendata.ch/v1/connections`, {
