@@ -10,6 +10,13 @@ document.getElementById('trainForm').addEventListener('submit', function(event) 
     getTrainConnections(from, to, datetime);
 });
 
+document.getElementById('button').addEventListener('click', function() {
+    const from = document.getElementById('from').value;
+    const to = document.getElementById('to').value;
+    const datetime = document.getElementById('datetime').value;
+    getTrainConnections(from, to, datetime);
+});
+
 
 
 async function getTrainConnections(from, to, datetime) {
@@ -58,12 +65,30 @@ async function getTrainConnections(from, to, datetime) {
 
             const platformInfo = connection.from.platform ? ` ${connection.from.platform}` : 'Keine Gleisinformation verfügbar';
             console.log(platformInfo);
+            console.log(connection.sections[0].journey.category);
             const isBus = connection.products.some(product => /^\d+$/.test(product)); // Annahme: Busse werden nur mit Nummern angegeben
-            const platformOrTrack = isBus ? `Kante ${platformInfo}` : `Gleis: ${platformInfo}`;
-            const transportDetails = connection.products.map(product => {
-                // Einzelne Produktprüfung: Ist es nur eine Zahl?
-                return /^\d+$/.test(product) ? `Bus ${product}` : product;
-            }).join(', ');
+
+            let transportMittel = "";
+            if (connection.sections[0].journey.category == "B") {
+                transportMittel = "Bus";
+            } else if (connection.sections[0].journey.category == "T") {
+                transportMittel = "Tram";
+            } else if (!isBus) {
+                transportMittel = "Zug";
+            }
+
+            console.log(transportMittel);
+            
+            let platformOrTrack = "";
+            if (isBus || transportMittel == "Tram") {
+                platformOrTrack = `Kante ${platformInfo}`;
+            } else platformOrTrack = `Gleis: ${platformInfo}`;
+
+
+            // const transportDetails = connection.products.map(product => {
+            //     // Einzelne Produktprüfung: Ist es nur eine Zahl?
+            //     return /^\d+$/.test(product) ? `Bus ${product}` : product;
+            // }).join(', ');
 
 
 
