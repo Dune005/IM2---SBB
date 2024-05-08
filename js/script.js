@@ -18,9 +18,108 @@ document.getElementById('trainForm').addEventListener('submit', function(event) 
 
 
 
+
+
+
+function calculateTransferTimes(connection) {
+    if (!connection.sections || connection.sections.length < 2) {
+        console.log('Nicht genug Abschnitte für Umsteigezeiten.');
+        return;
+    }
+    
+    const transferTimes = [];
+    let raucherinfo = [];
+
+    // Durchlaufen aller Sections, um die Umsteigezeiten zu berechnen
+    for (let i = 0; i < connection.sections.length - 1; i++) {
+        const currentSection = connection.sections[i];
+        const nextSection = connection.sections[i + 1];
+
+    //     /*
+    //     *  Transportmittel evaluation
+    //     */
+    //    console.log(connection);
+
+    //     const isBus = connection.products.some(product => /^\d+$/.test(product));
+    //     console.log(currentSection);
+    //     if (currentSection.journey.category == "B") {
+    //         // BUS
+    //         console.log("sektion "+i +": bus");
+    //         if (currentSection.departure.departureTimestamp && nextSection.departure.departureTimestamp) {
+    //             // Berechnung der Differenz in Sekunden
+    //             const timeDiff = nextSection.departure.departureTimestamp - currentSection.departure.departureTimestamp;
+    
+    //             // Umrechnung der Sekunden in Minuten
+    //             const minutes = Math.floor(timeDiff / 60);
+    //             console.log(minutes);
+    //             transferTimes.push(minutes);
+    
+    //             if (minutes > 2) {
+    //                 console.log("raucher");
+    //                 // raucherzeit
+    //                 let raucherzeit = minutes;
+    //                 let raucherbahnhof = currentSection.departure.location.name;
+    
+    
+    
+    //                 raucherinfo.push({raucherzeit, raucherbahnhof});
+    //             }
+    //         }
+
+
+    //     } else if (connection.sections[i].journey.category == "T") {
+    //         // TRAM
+    //         console.log("sektion "+i +": tram");
+
+            
+    //     } else if (!isBus) {
+    //         // ZUG
+    //         console.log("sektion "+i +": zug");
+
+    //     }
+
+
+        if (currentSection.departure.departureTimestamp && nextSection.departure.departureTimestamp) {
+            // Berechnung der Differenz in Sekunden
+            const timeDiff = nextSection.departure.departureTimestamp - currentSection.departure.departureTimestamp;
+
+            // Umrechnung der Sekunden in Minuten
+            const minutes = Math.floor(timeDiff / 60);
+            console.log(minutes);
+            transferTimes.push(minutes);
+
+            if (minutes >= 1) {
+                console.log("raucher");
+                // raucherzeit
+                let raucherzeit = minutes;
+                let raucherbahnhof = nextSection.departure.location.name;
+
+
+
+                raucherinfo.push({raucherzeit, raucherbahnhof});
+            }
+        }
+
+    }
+
+    // Ausgabe der Transferzeiten
+    console.log('Umsteigezeiten in Minuten:', transferTimes);
+    console.log('Raucherinfo:', raucherinfo);
+    return raucherinfo;
+}
+
+
+
+
+
+
+
+
 async function getTrainConnections(from, to, datetime) {
     //muss gelöscht werden damit die Abfrage funktioniert
-   
+    from = "Chur";
+    to = "Obersaxen, Tobel";
+
     // get date from datetime
     console.log(datetime);
     let params = {};
@@ -68,17 +167,21 @@ async function getTrainConnections(from, to, datetime) {
             console.log(platformInfo);
 
            
-            console.log(connection.sections[0].journey.category);
+           
             const isBus = connection.products.some(product => /^\d+$/.test(product)); // Annahme: Busse werden nur mit Nummern angegeben
 
+            console.log(connection.sections[0]);
             let transportMittel = "";
-            if (connection.sections[0].journey.category == "B") {
-                transportMittel = "Bus";
-            } else if (connection.sections[0].journey.category == "T") {
-                transportMittel = "Tram";
-            } else if (!isBus) {
-                transportMittel = "Zug";
+            if (connection.sections[0].journey) {
+                if (connection.sections[0].journey.category == "B") {
+                    transportMittel = "Bus";
+                } else if (connection.sections[0].journey.category == "T") {
+                    transportMittel = "Tram";
+                } else if (!isBus) {
+                    transportMittel = "Zug";
+                }
             }
+            
 
             console.log(transportMittel);
             
@@ -90,6 +193,9 @@ async function getTrainConnections(from, to, datetime) {
             
             console.log(connection);
 
+            //hier werden die Umsteigezeiten berechnet
+            let raucherinfo = calculateTransferTimes(connection);
+            console.log(raucherinfo);
 
 
 
@@ -145,6 +251,9 @@ async function getTrainConnections(from, to, datetime) {
 
 
 
+
+
+
 // hier wird die Suchfunktion für die Standortvorschläge implementiert.
 document.getElementById('from').addEventListener('input', function(event) {
     updateSuggestions(this.value, 'from-suggestions');
@@ -185,6 +294,14 @@ async function updateSuggestions(input, suggestionsContainerId) {
         console.error('Fehler beim Abrufen von Standortvorschlägen:', error);
     }
 }
+
+
+
+
+
+
+
+
 
 
 
