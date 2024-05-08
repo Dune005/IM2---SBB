@@ -1,7 +1,5 @@
 
 
-
-
 document.getElementById('trainForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const from = document.getElementById('from').value;
@@ -10,16 +8,20 @@ document.getElementById('trainForm').addEventListener('submit', function(event) 
     getTrainConnections(from, to, datetime);
 });
 
-document.getElementById('button').addEventListener('click', function() {
-    const from = document.getElementById('from').value;
-    const to = document.getElementById('to').value;
-    const datetime = document.getElementById('datetime').value;
-    getTrainConnections(from, to, datetime);
-});
+// document.getElementById('button').addEventListener('click', function() {
+//     const from = document.getElementById('from').value;
+//     const to = document.getElementById('to').value;
+//     const datetime = document.getElementById('datetime').value;
+
+//     getTrainConnections(from, to, datetime);
+// });
 
 
 
 async function getTrainConnections(from, to, datetime) {
+    //muss gelöscht werden damit die Abfrage funktioniert
+    from = "wittenbach zentrum";
+    to = "Bern";
 
     // get date from datetime
     console.log(datetime);
@@ -41,11 +43,12 @@ async function getTrainConnections(from, to, datetime) {
     }
     
     console.log(params);
+
     try {
         const response = await axios.get(`https://transport.opendata.ch/v1/connections`, {
             params: params
         });
-        const connections = response.data.connections.slice(0, 4); // Nehmen Sie die ersten vier Verbindungen
+        const connections = response.data.connections.slice(0, 1); // Nehmen Sie die ersten vier Verbindungen
         const resultsContainer = document.getElementById('results');
         resultsContainer.innerHTML = ''; // Leere den Container vor dem Hinzufügen neuer Ergebnisse
 
@@ -65,6 +68,8 @@ async function getTrainConnections(from, to, datetime) {
 
             const platformInfo = connection.from.platform ? ` ${connection.from.platform}` : 'Keine Gleisinformation verfügbar';
             console.log(platformInfo);
+
+           
             console.log(connection.sections[0].journey.category);
             const isBus = connection.products.some(product => /^\d+$/.test(product)); // Annahme: Busse werden nur mit Nummern angegeben
 
@@ -84,6 +89,11 @@ async function getTrainConnections(from, to, datetime) {
                 platformOrTrack = `Kante ${platformInfo}`;
             } else platformOrTrack = `Gleis: ${platformInfo}`;
 
+            
+            console.log(connection);
+
+
+
 
             // const transportDetails = connection.products.map(product => {
             //     // Einzelne Produktprüfung: Ist es nur eine Zahl?
@@ -97,17 +107,17 @@ async function getTrainConnections(from, to, datetime) {
 
         
             div.innerHTML = `
+                <p>${connection.from.station.name} - ${connection.to.station.name}</p>
                 <p>Abfahrt: ${departureTime}</p>
                 <p> ${platformOrTrack}</p>
                 <p>Ankunft: ${arrivalTime}</p>
                 <p>Dauer: ${totalMinutes} min</p>
                 <p>Umsteigen: ${connection.transfers}</p>
-                <p>Transportmittel: ${connection.products.join(', ')}</p>
                 <button id="details-${index}">Details</button>
                 <div id="overlay-${index}" class="overlay" style="display:none;">
                     <div class="overlay-content">
                         <span class="close" id="close-${index}">&times;</span>
-                        <p>Genauer Abfahrtsort: ${connection.from.station.name}</p>
+                        <p><p>Transportmittel: ${connection.products.join(', ')}</p>
                     </div>
                 </div>
             `;
