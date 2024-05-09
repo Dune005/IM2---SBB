@@ -39,6 +39,19 @@ h1 {
 
 }
 
+.rauchstopp {
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    color: darkgreen;
+}
+
+.bild_rauchstopp {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
 
 .button-80 {
   width: 50%;

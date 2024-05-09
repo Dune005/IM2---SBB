@@ -19,90 +19,44 @@ document.getElementById('trainForm').addEventListener('submit', function(event) 
 
 
 
-
-
 function calculateTransferTimes(connection) {
     if (!connection.sections || connection.sections.length < 2) {
         console.log('Nicht genug Abschnitte für Umsteigezeiten.');
         return;
     }
-    
+
     const transferTimes = [];
     let raucherinfo = [];
+    const estimatedWalkingTime = 180; // Geschätzte Fußwegzeit in Sekunden (z.B. 3 Minuten)
 
-    // Durchlaufen aller Sections, um die Umsteigezeiten zu berechnen
+    // Überprüfen, ob Buslinien in der Verbindung enthalten sind
+    const hasBus = connection.products.some(product => product === "2" || product.startsWith("B"));
+
     for (let i = 0; i < connection.sections.length - 1; i++) {
         const currentSection = connection.sections[i];
         const nextSection = connection.sections[i + 1];
 
-    //     /*
-    //     *  Transportmittel evaluation
-    //     */
-    //    console.log(connection);
+        if (currentSection.arrival && nextSection.departure) {
+            let timeDiff = nextSection.departure.departureTimestamp - currentSection.arrival.arrivalTimestamp;
 
-    //     const isBus = connection.products.some(product => /^\d+$/.test(product));
-    //     console.log(currentSection);
-    //     if (currentSection.journey.category == "B") {
-    //         // BUS
-    //         console.log("sektion "+i +": bus");
-    //         if (currentSection.departure.departureTimestamp && nextSection.departure.departureTimestamp) {
-    //             // Berechnung der Differenz in Sekunden
-    //             const timeDiff = nextSection.departure.departureTimestamp - currentSection.departure.departureTimestamp;
-    
-    //             // Umrechnung der Sekunden in Minuten
-    //             const minutes = Math.floor(timeDiff / 60);
-    //             console.log(minutes);
-    //             transferTimes.push(minutes);
-    
-    //             if (minutes > 2) {
-    //                 console.log("raucher");
-    //                 // raucherzeit
-    //                 let raucherzeit = minutes;
-    //                 let raucherbahnhof = currentSection.departure.location.name;
-    
-    
-    
-    //                 raucherinfo.push({raucherzeit, raucherbahnhof});
-    //             }
-    //         }
+            // Fußwegzeit nur unter bestimmten Bedingungen hinzufügen
+            if (hasBus && (i > 0 || i === connection.sections.length - 2)) { 
+                timeDiff += estimatedWalkingTime;
+            }
 
-
-    //     } else if (connection.sections[i].journey.category == "T") {
-    //         // TRAM
-    //         console.log("sektion "+i +": tram");
-
-            
-    //     } else if (!isBus) {
-    //         // ZUG
-    //         console.log("sektion "+i +": zug");
-
-    //     }
-
-
-        if (currentSection.departure.departureTimestamp && nextSection.departure.departureTimestamp) {
-            // Berechnung der Differenz in Sekunden
-            const timeDiff = nextSection.departure.departureTimestamp - currentSection.departure.departureTimestamp;
-
-            // Umrechnung der Sekunden in Minuten
             const minutes = Math.floor(timeDiff / 60);
-            console.log(minutes);
+
             transferTimes.push(minutes);
 
-            if (minutes >= 1) {
-                console.log("raucher");
-                // raucherzeit
-                let raucherzeit = minutes;
-                let raucherbahnhof = nextSection.departure.location.name;
-
-
-
-                raucherinfo.push({raucherzeit, raucherbahnhof});
+            if (minutes >= 8) {
+                raucherinfo.push({
+                    raucherzeit: minutes,
+                    raucherbahnhof: nextSection.departure.location.name
+                });
             }
         }
-
     }
 
-    // Ausgabe der Transferzeiten
     console.log('Umsteigezeiten in Minuten:', transferTimes);
     console.log('Raucherinfo:', raucherinfo);
     return raucherinfo;
@@ -117,8 +71,8 @@ function calculateTransferTimes(connection) {
 
 async function getTrainConnections(from, to, datetime) {
     //muss gelöscht werden damit die Abfrage funktioniert
-    from = "Chur";
-    to = "Obersaxen, Tobel";
+    from = "chur, sommeraustrasse";
+    to = "st.gallen";
 
     // get date from datetime
     console.log(datetime);
@@ -138,6 +92,8 @@ async function getTrainConnections(from, to, datetime) {
             to: to
         };
     }
+
+    params.limit = 10;
     
     console.log(params);
 
@@ -145,7 +101,7 @@ async function getTrainConnections(from, to, datetime) {
         const response = await axios.get(`https://transport.opendata.ch/v1/connections`, {
             params: params
         });
-        const connections = response.data.connections.slice(0, 1); // Nehmen Sie die ersten vier Verbindungen
+        const connections = response.data.connections.slice(0, 5); // Nehmen Sie die ersten vier Verbindungen
         const resultsContainer = document.getElementById('results');
         resultsContainer.innerHTML = ''; // Leere den Container vor dem Hinzufügen neuer Ergebnisse
 
@@ -217,6 +173,13 @@ async function getTrainConnections(from, to, datetime) {
                 <p>Ankunft: ${arrivalTime}</p>
                 <p>Dauer: ${totalMinutes} min</p>
                 <p>Umsteigen: ${connection.transfers}</p>
+                
+                ${raucherinfo.map(stop => `
+                <p class="rauchstopp">Dein Rauchstopp (${stop.raucherzeit}min): ${stop.raucherbahnhof}</p>
+                <img class="bild_rauchstopp"src="https://i.pinimg.com/originals/80/4e/32/804e32766bc5a01316e34065a0d10b8e.jpg" alt="Rauchstopp Icon">
+            `).join('')}
+
+
                 <button id="details-${index}">Details</button>
                 <div id="overlay-${index}" class="overlay" style="display:none;">
                     <div class="overlay-content">
@@ -366,103 +329,3 @@ function hidePopup(popupId) {
     var popup = document.getElementById(popupId);
     popup.style.display = "none";
 }
-
-
-// async function getTrainConnections(from, to) {
-//     try {
-//         const response = await axios.get(`https://transport.opendata.ch/v1/connections`, {
-//             params: {
-//                 from: from,
-//                 to: to
-//             }
-//         });
-//         const connections = response.data.connections.slice(0, 4); // Nehmen Sie die ersten vier Verbindungen
-//         const resultsContainer = document.getElementById('results');
-//         resultsContainer.innerHTML = ''; // Leere den Container vor dem Hinzufügen neuer Ergebnisse
-
-//         connections.forEach((connection, index) => {
-//             const div = document.createElement('div');
-//             const departureTime = new Date(connection.from.departure).toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
-//             const arrivalTime = new Date(connection.to.arrival).toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
-        
-//             // Extrahiere Stunden und Minuten aus der Dauer
-//             const durationMatch = connection.duration.match(/(\d+)d(\d{2}):(\d{2}):(\d{2})/);
-//             const days = durationMatch[1];
-//             const hours = durationMatch[2];
-//             const minutes = durationMatch[3];
-        
-//             // Berechne die gesamte Dauer in Minuten
-//             const totalMinutes = parseInt(days) * 1440 + parseInt(hours) * 60 + parseInt(minutes);
-
-//             const platformInfo = connection.from.platform ? ` ${connection.from.platform}` : 'Keine Gleisinformation verfügbar';
-//             console.log(platformInfo);
-//             const isBus = connection.products.some(product => /^\d+$/.test(product)); // Annahme: Busse werden nur mit Nummern angegeben
-//             const platformOrTrack = isBus ? `Kante ${platformInfo}` : `Gleis: ${platformInfo}`;
-//             const transportDetails = connection.products.map(product => {
-//                 // Einzelne Produktprüfung: Ist es nur eine Zahl?
-//                 return /^\d+$/.test(product) ? `Bus ${product}` : product;
-//             }).join(', ');
-
-
-
-
-
-
-        
-//             div.innerHTML = `
-//                 <p>Abfahrt: ${departureTime}</p>
-//                 <p> ${platformOrTrack}</p>
-//                 <p>Ankunft: ${arrivalTime}</p>
-//                 <p>Dauer: ${totalMinutes} min</p>
-//                 <p>Umsteigen: ${connection.transfers}</p>
-//                 <p>Transportmittel: ${connection.products.join(', ')}</p>
-//                 <button id="details-${index}">Details</button>
-//                 <div id="overlay-${index}" class="overlay" style="display:none;">
-//                     <div class="overlay-content">
-//                         <span class="close" id="close-${index}">&times;</span>
-//                         <p>Genauer Abfahrtsort: ${connection.from.station.name}</p>
-//                     </div>
-//                 </div>
-//             `;
-//             div.classList.add('connection');
-//             resultsContainer.appendChild(div);
-        
-//             document.getElementById(`details-${index}`).addEventListener('click', function() {
-//                 document.getElementById(`overlay-${index}`).style.display = 'block';
-//             });
-//             document.getElementById(`close-${index}`).addEventListener('click', function() {
-//                 document.getElementById(`overlay-${index}`).style.display = 'none';
-//             });
-
-//             document.getElementById('trainForm').addEventListener('submit', function(event) {
-//                 event.preventDefault();
-//                 submitDateTime();
-//             });
-//         });
-
-        
-//     } catch (error) {
-//         console.error('Fehler beim Abrufen der Zugdaten:', error);
-//     }
-// }
-
-
-
-
-            // // hier wird der Eingabewert für das Datum und die Uhrzeit abgerufen und an die getTrainConnections-Funktion übergeben.
-            // function submitDateTime() {
-            //     // Holen Sie den Wert des datetime-Inputs
-            //     const datetime = document.getElementById('datetime').value;
-            
-            //     // Holen Sie die Werte der from und to Inputs
-            //     const from = document.getElementById('from').value;
-            //     const to = document.getElementById('to').value;
-            
-            //     // Rufen Sie die getTrainConnections-Funktion mit den geholten Werten auf
-            //     getTrainConnections(from, to, datetime);
-            // }
-            
-            // function getTrainConnections(from, to, datetime) {
-            //     // Ihr Code zum Abrufen der Zugverbindungen hier
-            //     // Verwenden Sie den datetime-Wert in Ihrer API-Anfrage
-            // }
