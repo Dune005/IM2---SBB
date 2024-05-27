@@ -112,7 +112,7 @@ async function getTrainConnections(from, to, datetime) {
             
             ${(Array.isArray(raucherinfo) ? raucherinfo.map(stop => `
                 <p class="rauchstopp">Dein Rauchstopp (${stop.raucherzeit}min): ${stop.raucherbahnhof}</p>
-                <img class="bild_rauchstopp" src="https://i.pinimg.com/originals/80/4e/32/804e32766bc5a01316e34065a0d10b8e.jpg" alt="Rauchstopp Icon">
+                <img class="bild_rauchstopp" src="https://cdn-01.media-brady.com/store/stch/media/catalog/product/d/m/dmne_7961031012_p_std.lang.all.jpg" alt="Rauchstopp Icon">
             `).join('') : '')}
         
             <button id="details-${index}">Details</button>
