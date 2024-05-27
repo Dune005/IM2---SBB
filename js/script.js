@@ -1,28 +1,132 @@
-
-
 document.getElementById('trainForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const from = document.getElementById('from').value;
     const to = document.getElementById('to').value;
     const datetime = document.getElementById('datetime').value;
     getTrainConnections(from, to, datetime);
+    toggleFormVisibility(); // Hide the form when search is clicked
 });
 
-// document.getElementById('button').addEventListener('click', function() {
-//     const from = document.getElementById('from').value;
-//     const to = document.getElementById('to').value;
-//     const datetime = document.getElementById('datetime').value;
+document.getElementById('toggleFormButton').addEventListener('click', function() {
+    toggleFormVisibility(); // Show the form when toggle button is clicked
+});
 
-//     getTrainConnections(from, to, datetime);
-// });
+function toggleFormVisibility() {
+    const form = document.getElementById('trainForm');
+    form.classList.toggle('hidden');
+    const toggleButton = document.getElementById('toggleFormButton');
+    toggleButton.textContent = form.classList.contains('hidden') ? 'Formular anzeigen' : 'Formular ausblenden';
+}
 
+async function getTrainConnections(from, to, datetime) {
+    // from = "chur, sommeraustrasse";
+    // to = "st.gallen";
+    console.log(datetime);
+    let params = {};
+    if (datetime !== null) {
+        let date = datetime.split('T')[0];
+        let time = datetime.split('T')[1];
+        params = {
+            from: from,
+            to: to,
+            date: date,
+            time: time
+        };
+    } else {
+        params = {
+            from: from,
+            to: to
+        };
+    }
 
+    params.limit = 10;
+    
+    console.log(params);
 
+    try {
+        const response = await axios.get(`https://transport.opendata.ch/v1/connections`, {
+            params: params
+        });
+        const connections = response.data.connections.slice(0, 5); // Nehmen Sie die ersten vier Verbindungen
+        const resultsContainer = document.getElementById('results');
+        resultsContainer.innerHTML = ''; // Leere den Container vor dem Hinzufügen neuer Ergebnisse
+
+        connections.forEach((connection, index) => {
+            const div = document.createElement('div');
+            const departureTime = new Date(connection.from.departure).toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+            const arrivalTime = new Date(connection.to.arrival).toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+        
+            // Extract hours and minutes from the duration
+            const durationMatch = connection.duration.match(/(\d+)d(\d{2}):(\d{2}):(\d{2})/);
+            const days = durationMatch[1];
+            const hours = durationMatch[2];
+            const minutes = durationMatch[3];
+        
+            // Calculate the total duration in minutes
+            const totalMinutes = parseInt(days) * 1440 + parseInt(hours) * 60 + parseInt(minutes);
+
+            const platformInfo = connection.from.platform ? ` ${connection.from.platform}` : 'Keine Gleisinformation verfügbar';
+            console.log(platformInfo);
+
+            const isBus = connection.products.some(product => /^\d+$/.test(product));
+            let transportMittel = "";
+            if (connection.sections[0].journey) {
+                if (connection.sections[0].journey.category == "B") {
+                    transportMittel = "Bus";
+                } else if (connection.sections[0].journey.category == "T") {
+                    transportMittel = "Tram";
+                } else if (!isBus) {
+                    transportMittel = "Zug";
+                }
+            }
+            
+            let platformOrTrack = "";
+            if (isBus || transportMittel == "Tram") {
+                platformOrTrack = `Kante ${platformInfo}`;
+            } else platformOrTrack = `Gleis: ${platformInfo}`;
+
+            let raucherinfo = calculateTransferTimes(connection);
+
+            div.innerHTML = `
+            <p class="departure-station">${connection.from.station.name}<br>${connection.to.station.name}</p>
+            <p>Abfahrt: ${departureTime}</p>
+            <p>${platformOrTrack}</p>
+            <p>Ankunft: ${arrivalTime}</p>
+            <p>Dauer: ${totalMinutes} min</p>
+            <p>Umsteigen: ${connection.transfers}</p>
+            
+            ${(Array.isArray(raucherinfo) ? raucherinfo.map(stop => `
+                <p class="rauchstopp">Dein Rauchstopp (${stop.raucherzeit}min): ${stop.raucherbahnhof}</p>
+                <img class="bild_rauchstopp" src="https://i.pinimg.com/originals/80/4e/32/804e32766bc5a01316e34065a0d10b8e.jpg" alt="Rauchstopp Icon">
+            `).join('') : '')}
+        
+            <button id="details-${index}">Details</button>
+            <div id="overlay-${index}" class="overlay" style="display:none;">
+                <div class="overlay-content">
+                    <span class="close" id="close-${index}">&times;</span>
+                    <p>Transportmittel: ${connection.products.join(', ')}</p>
+                </div>
+            </div>
+        `;
+            div.classList.add('connection');
+            resultsContainer.appendChild(div);
+
+            document.getElementById(`details-${index}`).addEventListener('click', function() {
+                document.getElementById(`overlay-${index}`).style.display = 'block';
+            });
+            document.getElementById(`close-${index}`).addEventListener('click', function() {
+                document.getElementById(`overlay-${index}`).style.display = 'none';
+            });
+        });
+    } catch (error) {
+        console.error('Fehler beim Abrufen der Zugdaten:', error);
+    }
+}
 
 function calculateTransferTimes(connection) {
     if (!connection.sections || connection.sections.length < 2) {
         console.log('Nicht genug Abschnitte für Umsteigezeiten.');
-        return;
+        return [];
     }
 
     const transferTimes = [];
@@ -62,161 +166,6 @@ function calculateTransferTimes(connection) {
     return raucherinfo;
 }
 
-
-
-
-
-
-
-
-async function getTrainConnections(from, to, datetime) {
-    //muss gelöscht werden damit die Abfrage funktioniert
-    from = "chur, sommeraustrasse";
-    to = "st.gallen";
-
-    // get date from datetime
-    console.log(datetime);
-    let params = {};
-    if (datetime !== null) {
-        let date = datetime.split('T')[0];
-        let time = datetime.split('T')[1];
-        params = {
-            from: from,
-            to: to,
-            date: date,
-            time: time
-        };
-    } else {
-        params = {
-            from: from,
-            to: to
-        };
-    }
-
-    params.limit = 10;
-    
-    console.log(params);
-
-    try {
-        const response = await axios.get(`https://transport.opendata.ch/v1/connections`, {
-            params: params
-        });
-        const connections = response.data.connections.slice(0, 5); // Nehmen Sie die ersten vier Verbindungen
-        const resultsContainer = document.getElementById('results');
-        resultsContainer.innerHTML = ''; // Leere den Container vor dem Hinzufügen neuer Ergebnisse
-
-        connections.forEach((connection, index) => {
-            const div = document.createElement('div');
-            const departureTime = new Date(connection.from.departure).toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
-            const arrivalTime = new Date(connection.to.arrival).toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
-        
-            // Extrahiere Stunden und Minuten aus der Dauer
-            const durationMatch = connection.duration.match(/(\d+)d(\d{2}):(\d{2}):(\d{2})/);
-            const days = durationMatch[1];
-            const hours = durationMatch[2];
-            const minutes = durationMatch[3];
-        
-            // Berechne die gesamte Dauer in Minuten
-            const totalMinutes = parseInt(days) * 1440 + parseInt(hours) * 60 + parseInt(minutes);
-
-            const platformInfo = connection.from.platform ? ` ${connection.from.platform}` : 'Keine Gleisinformation verfügbar';
-            console.log(platformInfo);
-
-           
-           
-            const isBus = connection.products.some(product => /^\d+$/.test(product)); // Annahme: Busse werden nur mit Nummern angegeben
-
-            console.log(connection.sections[0]);
-            let transportMittel = "";
-            if (connection.sections[0].journey) {
-                if (connection.sections[0].journey.category == "B") {
-                    transportMittel = "Bus";
-                } else if (connection.sections[0].journey.category == "T") {
-                    transportMittel = "Tram";
-                } else if (!isBus) {
-                    transportMittel = "Zug";
-                }
-            }
-            
-
-            console.log(transportMittel);
-            
-            let platformOrTrack = "";
-            if (isBus || transportMittel == "Tram") {
-                platformOrTrack = `Kante ${platformInfo}`;
-            } else platformOrTrack = `Gleis: ${platformInfo}`;
-
-            
-            console.log(connection);
-
-            //hier werden die Umsteigezeiten berechnet
-            let raucherinfo = calculateTransferTimes(connection);
-            console.log(raucherinfo);
-
-
-
-            // const transportDetails = connection.products.map(product => {
-            //     // Einzelne Produktprüfung: Ist es nur eine Zahl?
-            //     return /^\d+$/.test(product) ? `Bus ${product}` : product;
-            // }).join(', ');
-
-
-
-
-
-
-        
-            div.innerHTML = `
-                <p>${connection.from.station.name} - ${connection.to.station.name}</p>
-                <p>Abfahrt: ${departureTime}</p>
-                <p> ${platformOrTrack}</p>
-                <p>Ankunft: ${arrivalTime}</p>
-                <p>Dauer: ${totalMinutes} min</p>
-                <p>Umsteigen: ${connection.transfers}</p>
-                
-                ${raucherinfo.map(stop => `
-                <p class="rauchstopp">Dein Rauchstopp (${stop.raucherzeit}min): ${stop.raucherbahnhof}</p>
-                <img class="bild_rauchstopp"src="https://i.pinimg.com/originals/80/4e/32/804e32766bc5a01316e34065a0d10b8e.jpg" alt="Rauchstopp Icon">
-            `).join('')}
-
-
-                <button id="details-${index}">Details</button>
-                <div id="overlay-${index}" class="overlay" style="display:none;">
-                    <div class="overlay-content">
-                        <span class="close" id="close-${index}">&times;</span>
-                        <p><p>Transportmittel: ${connection.products.join(', ')}</p>
-                    </div>
-                </div>
-            `;
-            div.classList.add('connection');
-            resultsContainer.appendChild(div);
-        
-            document.getElementById(`details-${index}`).addEventListener('click', function() {
-                document.getElementById(`overlay-${index}`).style.display = 'block';
-            });
-            document.getElementById(`close-${index}`).addEventListener('click', function() {
-                document.getElementById(`overlay-${index}`).style.display = 'none';
-            });
-
-            
-        });
-
-        
-    } catch (error) {
-        console.error('Fehler beim Abrufen der Zugdaten:', error);
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
 // hier wird die Suchfunktion für die Standortvorschläge implementiert.
 document.getElementById('from').addEventListener('input', function(event) {
     updateSuggestions(this.value, 'from-suggestions');
@@ -226,7 +175,6 @@ document.getElementById('to').addEventListener('input', function(event) {
     updateSuggestions(this.value, 'to-suggestions');
 });
 
-// Funktion zur Aktualisierung der Vorschläge und zum Setzen des ausgewählten Wertes
 async function updateSuggestions(input, suggestionsContainerId) {
     if (input.length < 2) { // Mindestens 2 Buchstaben, bevor Anfragen gesendet werden
         document.getElementById(suggestionsContainerId).innerHTML = '';
@@ -258,69 +206,40 @@ async function updateSuggestions(input, suggestionsContainerId) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-// Get the input element for "from"
 var inputFrom = document.getElementById("from");
-
 hidePopup("popup1");
 hidePopup("popup2");
 
-// Add event listener for input event for "from"
 inputFrom.addEventListener("input", function() {
-  if (inputFrom.value.trim().length > 1) { // Check if input has some text
-    showPopup("popup1");
-  } else {
-    hidePopup("popup1");
-    hidePopup("popup2");
-  }
+    if (inputFrom.value.trim().length > 1) { // Check if input has some text
+        showPopup("popup1");
+    } else {
+        hidePopup("popup1");
+        hidePopup("popup2");
+    }
 });
 
-// Get the input element for "from"
 var inputTo = document.getElementById("to");
 
-// Add event listener for input event for "from"
 inputTo.addEventListener("input", function() {
-  if (inputTo.value.trim().length > 1) { // Check if input has some text
-    showPopup("popup2");
-  } else {
-    hidePopup("popup1");
-    hidePopup("popup2");
-  }
+    if (inputTo.value.trim().length > 1) { // Check if input has some text
+        showPopup("popup2");
+    } else {
+        hidePopup("popup1");
+        hidePopup("popup2");
+    }
 });
-
 
 function showPopup(popupId) {
     var popup = document.getElementById(popupId);
     popup.style.display = "block";
-
-    // Get the input element
     var input = document.getElementById(popupId === "popup1" ? "from" : "to");
     var rect = input.getBoundingClientRect(); // Get the position of the input element relative to the viewport
 
-    // Adjust the top position of the pop-up
     popup.style.top = rect.bottom + window.pageYOffset + "px";
 
-    // Add event listener to the input field within the popup
-    /*
-    var inputField = document.getElementById("#"+inputId);
-    inputField.addEventListener("click", function() {
-        console.log("adfasdf");
-        // Hide the respective popup and close button when something is selected
-        hidePopup(popupId);
-    });
-    */
-
     var dropdownMenu = document.getElementById(popupId);
-        dropdownMenu.addEventListener("click", function() {
+    dropdownMenu.addEventListener("click", function() {
         hidePopup(popupId);
     });
 }
