@@ -19,8 +19,8 @@ function toggleFormVisibility() {
 }
 
 async function getTrainConnections(from, to, datetime) {
-    from = "chur, sommeraustrasse";
-    to = "st.gallen";
+    from = "st.gallen";
+    to = "genève";
     console.log(datetime);
     let params = {};
     if (datetime !== null) {
@@ -61,34 +61,49 @@ async function getTrainConnections(from, to, datetime) {
             const days = durationMatch[1];
             const hours = durationMatch[2];
             const minutes = durationMatch[3];
+            
+            console.log(connection);
         
             // Calculate the total duration in minutes
             const totalMinutes = parseInt(days) * 1440 + parseInt(hours) * 60 + parseInt(minutes);
 
-            const platformInfo = connection.from.platform ? ` ${connection.from.platform}` : 'Keine Gleisinformation verfügbar';
+            const platformInfo = connection.from.platform ? ` ${connection.from.platform}` : ''; // Nur anzeigen, wenn Plattforminformationen verfügbar sind
             console.log(platformInfo);
 
             const isBus = connection.products.some(product => /^\d+$/.test(product));
             let transportMittel = "";
             if (connection.sections[0].journey) {
-                if (connection.sections[0].journey.category == "B") {
+                if (connection.sections[0].journey.category == "B" || isBus) {
                     transportMittel = "Bus";
                 } else if (connection.sections[0].journey.category == "T") {
                     transportMittel = "Tram";
-                } else if (!isBus) {
+                } else {
                     transportMittel = "Zug";
                 }
             }
-            
+
+            const trainProducts = ["IR 75", "IC 8", "EC 5", "ICE 70", "RE 15", "RB 22", "S7", "TGV 9266", "RJ 63"];
+            const isTrainProduct = connection.products.some(product => trainProducts.includes(product));
+
+            // let transportMittel = "";
+            // if (connection.sections[0].journey) {
+            //     if (isTrainProduct) {
+            //         transportMittel = "Zug";
+            //     }
+            // }
+
             let platformOrTrack = "";
-            if (isBus || transportMittel == "Tram") {
-                platformOrTrack = `Kante ${platformInfo}`;
-            } else platformOrTrack = `Gleis: ${platformInfo}`;
+            if (transportMittel == "Zug") { // Wenn es sich um einen Zug handelt, wird immer "Gleis" angezeigt
+                platformOrTrack = `Gleis: ${connection.from.platform}`; 
+            } else {
+                // Nur Kante anzeigen, wenn Informationen verfügbar sind
+                platformOrTrack = connection.from.platform ? `Kante ${connection.from.platform}` : '';
+            }
 
             let raucherinfo = calculateTransferTimes(connection);
 
             div.innerHTML = `
-            <p class="departure-station">${connection.from.station.name}<br>${connection.to.station.name}</p>
+            <p class="departure-station">${connection.from.station.name} –<br>${connection.to.station.name}</p>
             <p>Abfahrt: ${departureTime}</p>
             <p>${platformOrTrack}</p>
             <p>Ankunft: ${arrivalTime}</p>
@@ -103,7 +118,7 @@ async function getTrainConnections(from, to, datetime) {
             <button id="details-${index}">Details</button>
             <div id="overlay-${index}" class="overlay" style="display:none;">
                 <div class="overlay-content">
-                    <span class="close" id="close-${index}">&times;</span>
+                    <span class="close" id="close-${index}">×</span>
                     <p>Transportmittel: ${connection.products.join(', ')}</p>
                 </div>
             </div>
@@ -248,3 +263,6 @@ function hidePopup(popupId) {
     var popup = document.getElementById(popupId);
     popup.style.display = "none";
 }
+
+
+
