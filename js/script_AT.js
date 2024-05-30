@@ -102,37 +102,46 @@ async function getTrainConnections(from, to, datetime) {
             <p>Dauer: ${totalMinutes} min</p>
             <p>Umsteigen: ${connection.transfers}</p>
             
-            ${(Array.isArray(raucherinfo) ? raucherinfo.map(stop => `
-                <p class="rauchstopp">Dein Rauchstopp (${stop.raucherzeit}min): ${stop.raucherbahnhof}</p>
+            ${(Array.isArray(raucherinfo) ? raucherinfo.map((stop, idx) => `
+                <p class="rauchstopp" id="rauchstopp-${index}-${idx}">Dein Rauchstopp (${stop.raucherzeit}min): ${stop.raucherbahnhof}</p>
+                <div id="overlay-${index}-${idx}" class="overlay" style="display:none;">
+                    <div class="overlay-content">
+                        <span class="close" id="close-${index}-${idx}">×</span>
+                        <p>Transportmittel: ${connection.products.join(', ')}</p>
+                    </div>
+                </div>
                 <img class="bild_rauchstopp" src="https://cdn-01.media-brady.com/store/stch/media/catalog/product/d/m/dmne_7961031012_p_std.lang.all.jpg" alt="Rauchstopp Icon">
             `).join('') : '')}
         
-            <button id="details-${index}">Details</button>
-            <div id="overlay-${index}" class="overlay" style="display:none;">
-                <div class="overlay-content">
-                    <span class="close" id="close-${index}">×</span>
-                    <p>Transportmittel: ${connection.products.join(', ')}</p>
-                </div>
-            </div>
         `;
             div.classList.add('connection');
             resultsContainer.appendChild(div);
 
+            // Check if there is no "rauchstopp" button and add "KEIN RAUCHSTOPP!" div if necessary
+            if (!div.querySelector('.rauchstopp')) {
+                const noRauchstoppDiv = document.createElement('div');
+                noRauchstoppDiv.textContent = 'KEIN RAUCHSTOPP!';
+                noRauchstoppDiv.classList.add('no-rauchstopp');
+                div.appendChild(noRauchstoppDiv);
+            }
+
             // Neue Bildüberprüfung und Hinzufügung
             const rauchstoppBilder = div.querySelectorAll('.bild_rauchstopp');
             if (rauchstoppBilder.length === 0) {
-                const anderesBild = document.createElement('img');
-                anderesBild.src = 'https://www.safetymarking.ch/images/280/38A6005_Y_01/verbotsschild-rauchen-verboten.jpg';
-                anderesBild.alt = 'Alternative Bild';
-                anderesBild.classList.add('anderes-bild'); // Fügen Sie die spezifische Klasse hinzu
-                div.appendChild(anderesBild);
+                const nichtrauchenBild = document.createElement('img');
+                nichtrauchenBild.src = 'https://www.safetymarking.ch/images/280/38A6005_Y_01/verbotsschild-rauchen-verboten.jpg';
+                nichtrauchenBild.alt = 'nichtrauchen Bild';
+                nichtrauchenBild.classList.add('nichtrauchen-bild'); // Fügen Sie die spezifische Klasse hinzu
+                div.appendChild(nichtrauchenBild);
             }
 
-            document.getElementById(`details-${index}`).addEventListener('click', function() {
-                document.getElementById(`overlay-${index}`).style.display = 'block';
-            });
-            document.getElementById(`close-${index}`).addEventListener('click', function() {
-                document.getElementById(`overlay-${index}`).style.display = 'none';
+            raucherinfo.forEach((stop, idx) => {
+                document.getElementById(`rauchstopp-${index}-${idx}`).addEventListener('click', function() {
+                    document.getElementById(`overlay-${index}-${idx}`).style.display = 'block';
+                });
+                document.getElementById(`close-${index}-${idx}`).addEventListener('click', function() {
+                    document.getElementById(`overlay-${index}-${idx}`).style.display = 'none';
+                });
             });
         });
     } catch (error) {

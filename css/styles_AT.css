@@ -12,14 +12,30 @@ h1 {
     margin-bottom: 20px;
     color: #A20013;
 }
-
+    
+@media  (max-width: 800px) {
+    h1 {
+        font-size: 5vw;
+    }
+    
+}
+/* Basis-Schriftgröße relativ zur Fensterbreite */
 h2 {
     text-align: center;
-    font-size: 2rem;
+    font-size: 2vw;
     margin-bottom: 20px;
     color: black;
     border-color: #333;
+
 }
+
+/* Anpassung für größere Bildschirme */
+@media (max-width: 800px) {
+    h2 {
+        font-size: 4vw;
+    }
+}
+
 
 #trainForm.search-field {
     display: flex;
@@ -106,7 +122,24 @@ p {
     text-decoration: none;
     display: inline-block;
     transition-duration: 0.4s;
-    border-radius: 4px 4px 0px 0px;
+    border-radius: 8px;
+    margin: 0px;
+}
+
+.rauchstopp:hover {
+    background-color: #3e8e41; /* Darker green */
+}
+
+.no-rauchstopp {
+    background-color: #aa0404; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition-duration: 0.4s;
+    border-radius: 8px;
     margin: 0px;
 }
 
@@ -123,7 +156,7 @@ p {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.1), 0 6px 20px 0 rgba(0,0,0,0.1);
 }
 
-.anderes-bild {
+.nichtrauchen-bild {
     width: 20%;
     max-width: 100px;
     height: auto;
