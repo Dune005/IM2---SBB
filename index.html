@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Die besser SBB-App</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles_AT.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
@@ -16,13 +16,13 @@
 
     <div class="redbox">
         <form id="trainForm" class="search-field">
-            <label class="boxtext" for="from">Do besch</label>
+            <label class="boxtext" for="from">Sie befinden sich hier</label>
             <input type="text" id="from" name="from" autocomplete="off">
             <div id="popup1" class="popup">
                 <span class="close" onclick="hidePopup('popup1')"></span>
                 <div id="from-suggestions" class="suggestions-container"></div> <!-- Container für Vorschläge des Abfahrtsorts -->
             </div>
-            <label class="boxtext" for="to">Do muesch hie</label>
+            <label class="boxtext" for="to">Ihr Ziel</label>
             <input type="text" id="to" name="to" autocomplete="off">
             <div id="popup2" class="popup">
                 <span class="close" onclick="hidePopup('popup2')"></span>
@@ -31,14 +31,14 @@
             
             
             <!-- Das ist die Abfahrtszeit mit Kalender -->
-            <label class="boxtext" for="datetime">Denn gasch los</label>
+            <label class="boxtext" for="datetime">Dann geht's los</label>
             <input type="datetime-local" id="datetime" name="datetime">
-            <button id="button" class="button-80">Suech</button>
+            <button id="button" class="button-80">Suche</button>
         </form>
         <button id="toggleFormButton" class="button-80">Formular anzeigen</button>
     
     </div>
     <div id="results"></div> <!-- Container für die Ergebnisse -->
-    <script src="js/script.js"></script>
+    <script src="js/script_AT.js"></script>
 </body>
 </html>
