@@ -19,8 +19,8 @@ function toggleFormVisibility() {
 }
 
 async function getTrainConnections(from, to, datetime) {
-    from = "st.gallen";
-    to = "genève";
+    from = "st. gallen";
+    to = "Luzern";
     console.log(datetime);
     let params = {};
     if (datetime !== null) {
@@ -85,52 +85,63 @@ async function getTrainConnections(from, to, datetime) {
             const trainProducts = ["IR 75", "IC 8", "EC 5", "ICE 70", "RE 15", "RB 22", "S7", "TGV 9266", "RJ 63"];
             const isTrainProduct = connection.products.some(product => trainProducts.includes(product));
 
-            // let transportMittel = "";
-            // if (connection.sections[0].journey) {
-            //     if (isTrainProduct) {
-            //         transportMittel = "Zug";
-            //     }
-            // }
-
             let platformOrTrack = "";
             if (transportMittel == "Zug") { // Wenn es sich um einen Zug handelt, wird immer "Gleis" angezeigt
                 platformOrTrack = `Gleis: ${connection.from.platform}`; 
             } else {
-                // Nur Kante anzeigen, wenn Informationen verfügbar sind
                 platformOrTrack = connection.from.platform ? `Kante ${connection.from.platform}` : '';
             }
 
             let raucherinfo = calculateTransferTimes(connection);
 
             div.innerHTML = `
-            <p class="departure-station">${connection.from.station.name} –<br>${connection.to.station.name}</p>
-            <p>Abfahrt: ${departureTime}</p>
+            <p class="departure-station">${connection.from.station.name} – <br> ${connection.to.station.name}</p>
+            <p>Abfahrt: ${departureTime} Uhr</p>
             <p>${platformOrTrack}</p>
-            <p>Ankunft: ${arrivalTime}</p>
+            <p>Ankunft: ${arrivalTime} Uhr</p>
             <p>Dauer: ${totalMinutes} min</p>
             <p>Umsteigen: ${connection.transfers}</p>
             
-            ${(Array.isArray(raucherinfo) ? raucherinfo.map(stop => `
-                <p class="rauchstopp">Dein Rauchstopp (${stop.raucherzeit}min): ${stop.raucherbahnhof}</p>
-                <img class="bild_rauchstopp" src="https://cdn-01.media-brady.com/store/stch/media/catalog/product/d/m/dmne_7961031012_p_std.lang.all.jpg" alt="Rauchstopp Icon">
+            ${(Array.isArray(raucherinfo) ? raucherinfo.map((stop, idx) => `
+                <p class="rauchstopp" id="rauchstopp-${index}-${idx}">Dein Rauchstopp (${stop.raucherzeit}min): ${stop.raucherbahnhof}</p>
+                <div id="overlay-${index}-${idx}" class="overlay" style="display:none;">
+                    <div class="overlay-content">
+                        <span class="close" id="close-${index}-${idx}">×</span>
+                        <p>Transportmittel: ${connection.products.join(', ')}</p>
+                    </div>
+                </div>
+                <img class="bild_rauchstopp" src="https://img.freepik.com/vektoren-kostenlos/raucherbereich-gruener-kreis-zeichen_78370-1286.jpg?size=338&ext=jpg&ga=GA1.1.44546679.1716768000&semt=ais_user" alt="Rauchstopp Icon">
             `).join('') : '')}
         
-            <button id="details-${index}">Details</button>
-            <div id="overlay-${index}" class="overlay" style="display:none;">
-                <div class="overlay-content">
-                    <span class="close" id="close-${index}">×</span>
-                    <p>Transportmittel: ${connection.products.join(', ')}</p>
-                </div>
-            </div>
         `;
             div.classList.add('connection');
             resultsContainer.appendChild(div);
 
-            document.getElementById(`details-${index}`).addEventListener('click', function() {
-                document.getElementById(`overlay-${index}`).style.display = 'block';
-            });
-            document.getElementById(`close-${index}`).addEventListener('click', function() {
-                document.getElementById(`overlay-${index}`).style.display = 'none';
+            // Check if there is no "rauchstopp" button and add "KEIN RAUCHSTOPP!" div if necessary
+            if (!div.querySelector('.rauchstopp')) {
+                const noRauchstoppDiv = document.createElement('div');
+                noRauchstoppDiv.textContent = 'KEIN RAUCHSTOPP!';
+                noRauchstoppDiv.classList.add('no-rauchstopp');
+                div.appendChild(noRauchstoppDiv);
+            }
+
+            // Neue Bildüberprüfung und Hinzufügung
+            const rauchstoppBilder = div.querySelectorAll('.bild_rauchstopp');
+            if (rauchstoppBilder.length === 0) {
+                const nichtrauchenBild = document.createElement('img');
+                nichtrauchenBild.src = 'https://www.safetymarking.ch/images/280/38A6005_Y_01/verbotsschild-rauchen-verboten.jpg';
+                nichtrauchenBild.alt = 'nichtrauchen Bild';
+                nichtrauchenBild.classList.add('nichtrauchen-bild'); // Fügen Sie die spezifische Klasse hinzu
+                div.appendChild(nichtrauchenBild);
+            }
+
+            raucherinfo.forEach((stop, idx) => {
+                document.getElementById(`rauchstopp-${index}-${idx}`).addEventListener('click', function() {
+                    document.getElementById(`overlay-${index}-${idx}`).style.display = 'block';
+                });
+                document.getElementById(`close-${index}-${idx}`).addEventListener('click', function() {
+                    document.getElementById(`overlay-${index}-${idx}`).style.display = 'none';
+                });
             });
         });
     } catch (error) {
@@ -148,7 +159,6 @@ function calculateTransferTimes(connection) {
     let raucherinfo = [];
     const estimatedWalkingTime = 180; // Geschätzte Fußwegzeit in Sekunden (z.B. 3 Minuten)
 
-    // Überprüfen, ob Buslinien in der Verbindung enthalten sind
     const hasBus = connection.products.some(product => product === "2" || product.startsWith("B"));
 
     for (let i = 0; i < connection.sections.length - 1; i++) {
@@ -158,7 +168,6 @@ function calculateTransferTimes(connection) {
         if (currentSection.arrival && nextSection.departure) {
             let timeDiff = nextSection.departure.departureTimestamp - currentSection.arrival.arrivalTimestamp;
 
-            // Fußwegzeit nur unter bestimmten Bedingungen hinzufügen
             if (hasBus && (i > 0 || i === connection.sections.length - 2)) { 
                 timeDiff += estimatedWalkingTime;
             }
@@ -181,7 +190,6 @@ function calculateTransferTimes(connection) {
     return raucherinfo;
 }
 
-// hier wird die Suchfunktion für die Standortvorschläge implementiert.
 document.getElementById('from').addEventListener('input', function(event) {
     updateSuggestions(this.value, 'from-suggestions');
 });
@@ -191,7 +199,7 @@ document.getElementById('to').addEventListener('input', function(event) {
 });
 
 async function updateSuggestions(input, suggestionsContainerId) {
-    if (input.length < 2) { // Mindestens 2 Buchstaben, bevor Anfragen gesendet werden
+    if (input.length < 2) {
         document.getElementById(suggestionsContainerId).innerHTML = '';
         return;
     }
@@ -199,14 +207,13 @@ async function updateSuggestions(input, suggestionsContainerId) {
         const response = await axios.get(`https://transport.opendata.ch/v1/locations?query=${input}`);
         const locations = response.data.stations;
         const suggestionsContainer = document.getElementById(suggestionsContainerId);
-        suggestionsContainer.innerHTML = ''; // Leere den Container vor dem Hinzufügen neuer Vorschläge
+        suggestionsContainer.innerHTML = '';
 
         locations.forEach(location => {
             const option = document.createElement('div');
             option.innerHTML = location.name;
             option.className = 'suggestion';
             option.onclick = function() {
-                // Bestimme, welches Input-Feld aktualisiert werden soll
                 if (suggestionsContainerId === 'from-suggestions') {
                     document.getElementById('from').value = location.name;
                 } else {
@@ -226,7 +233,7 @@ hidePopup("popup1");
 hidePopup("popup2");
 
 inputFrom.addEventListener("input", function() {
-    if (inputFrom.value.trim().length > 1) { // Check if input has some text
+    if (inputFrom.value.trim().length > 1) {
         showPopup("popup1");
     } else {
         hidePopup("popup1");
@@ -237,7 +244,7 @@ inputFrom.addEventListener("input", function() {
 var inputTo = document.getElementById("to");
 
 inputTo.addEventListener("input", function() {
-    if (inputTo.value.trim().length > 1) { // Check if input has some text
+    if (inputTo.value.trim().length > 1) {
         showPopup("popup2");
     } else {
         hidePopup("popup1");
@@ -249,7 +256,7 @@ function showPopup(popupId) {
     var popup = document.getElementById(popupId);
     popup.style.display = "block";
     var input = document.getElementById(popupId === "popup1" ? "from" : "to");
-    var rect = input.getBoundingClientRect(); // Get the position of the input element relative to the viewport
+    var rect = input.getBoundingClientRect();
 
     popup.style.top = rect.bottom + window.pageYOffset + "px";
 
