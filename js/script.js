@@ -20,7 +20,7 @@ function toggleFormVisibility() {
 
 async function getTrainConnections(from, to, datetime) {
     from = "st. gallen";
-    to = "Luzern";
+    to = "chur";
     console.log(datetime);
     let params = {};
     if (datetime !== null) {
@@ -272,3 +272,24 @@ function hidePopup(popupId) {
     var popup = document.getElementById(popupId);
     popup.style.display = "none";
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const h2Element = document.getElementById('hoverText');
+
+    // Erstellen und Stylen des alternativen Textes
+    const altText = document.createElement('div');
+    altText.classList.add('alt-text');
+    altText.textContent = 'Plane deine Reise mit dem Raucher-Reiseplaner und geniesse deine Rauchpausen an den richtigen Zwischenstopps.';
+
+    // Alternativtext zum h2-Element hinzufügen
+    h2Element.appendChild(altText);
+
+    // Event-Listener für Hover-Effekt hinzufügen
+    h2Element.addEventListener('mouseenter', function () {
+        altText.style.display = 'block';
+    });
+
+    h2Element.addEventListener('mouseleave', function () {
+        altText.style.display = 'none';
+    });
+});

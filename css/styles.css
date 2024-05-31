@@ -8,30 +8,44 @@ body {
 
 h1 {
     text-align: center;
-    font-size: 3.5rem;
+    font-size: calc(2rem + 2vw);
     margin-bottom: 20px;
     color: #EB0000;
 }
 
 @media (max-width: 800px) {
     h1 {
-        font-size: 5vw;
+        font-size: calc(2em + 1.75vw);
     }
 }
 
 h2 {
-    text-align: center;
-    font-size: 2vw;
+    text-align: justify;
+    font-size: calc(1.25rem + 1.25vw);
     margin-bottom: 20px;
+    text-align: center;
     color: black;
-    border-color: #333;
+    border: 2px solid #333;
+    padding: 20px;
+    position: relative; /* Notwendig für die Positionierung des Alternativtextes */
+    overflow: hidden; /* Verhindert das Überlaufen des alternativen Textes */
 }
 
-@media (max-width: 800px) {
-    h2 {
-        font-size: 4vw;
-    }
+.alt-text {
+    display: none; /* Standardmäßig ausgeblendet */
+    position: absolute;
+    font-size: calc(0.5rem + 1vw); /* Dynamische Schriftgröße */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 1); /* Heller Hintergrund für Lesbarkeit */
+    color: black; /* Textfarbe */
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box; /* Enthält Polsterung und Rahmen in der Breite/Höhe */
 }
+
 
 #trainForm.search-field {
     display: flex;
@@ -178,6 +192,10 @@ p {
     margin: 0px;
 }
 
+.no-rauchstopp:hover {
+    background-color: #A20013; 
+}
+
 .bild_rauchstopp {
     width: 20%;
     max-width: 100px;
@@ -270,6 +288,13 @@ p {
     margin: 20px auto;
 }
 
+@media (max-width: 300px) {
+    #toggleFormButton {
+        font-size: 12px; /* Kleinere Schriftgröße bei schmalen Buttons */
+        padding: 5px; /* Kleinere Polsterung bei schmalen Buttons */
+    }
+}
+
 #trainForm.hidden + #toggleFormButton {
     display: block;
 }
@@ -291,6 +316,12 @@ p {
     margin: 0 auto;
 }
 
+div.suggestion:hover {
+    cursor: pointer;
+    padding: 0px 2px ;
+    border-radius: 8px;
+    }
+
 .suggestions-container {
     display: grid;
     justify-items: start;
@@ -308,3 +339,4 @@ p {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
