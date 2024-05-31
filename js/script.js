@@ -101,6 +101,7 @@ async function getTrainConnections(from, to, datetime) {
             <p>Ankunft: ${arrivalTime} Uhr</p>
             <p>Dauer: ${totalMinutes} min</p>
             <p>Umsteigen: ${connection.transfers}</p>
+            <p>Transportmittel: ${connection.products.join(', ')}</p>
             
             ${(Array.isArray(raucherinfo) ? raucherinfo.map((stop, idx) => `
                 <p class="rauchstopp" id="rauchstopp-${index}-${idx}">Dein Rauchstopp (${stop.raucherzeit}min): ${stop.raucherbahnhof}</p>
@@ -135,14 +136,15 @@ async function getTrainConnections(from, to, datetime) {
                 div.appendChild(nichtrauchenBild);
             }
 
-            raucherinfo.forEach((stop, idx) => {
+            /*raucherinfo.forEach((stop, idx) => {
                 document.getElementById(`rauchstopp-${index}-${idx}`).addEventListener('click', function() {
                     document.getElementById(`overlay-${index}-${idx}`).style.display = 'block';
                 });
                 document.getElementById(`close-${index}-${idx}`).addEventListener('click', function() {
                     document.getElementById(`overlay-${index}-${idx}`).style.display = 'none';
                 });
-            });
+            });*/
+            
         });
     } catch (error) {
         console.error('Fehler beim Abrufen der Zugdaten:', error);
