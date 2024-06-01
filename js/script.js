@@ -293,3 +293,25 @@ document.addEventListener('DOMContentLoaded', function () {
         altText.style.display = 'none';
     });
 });
+
+document.addEventListener('DOMContentLoaded2', function () {
+    const h2Element2 = document.getElementById('hoverText2');
+
+    // Erstellen und Stylen des alternativen Textes
+    const altText2 = document.createElement('div');
+    altText2.classList.add('alt-text2');
+    altText2.textContent = 'Kontaktiere uns über das untenstehende Formular.';
+    altText2.style.display = 'none'; // Sicherstellen, dass es anfangs nicht sichtbar ist
+
+    // Alternativtext zum h2-Element hinzufügen
+    h2Element2.appendChild(altText2);
+
+    // Event-Listener für Hover-Effekt hinzufügen
+    h2Element2.addEventListener('mouseenter', function () {
+        altText2.style.display = 'block';
+    });
+
+    h2Element2.addEventListener('mouseleave', function () {
+        altText2.style.display = 'none';
+    });
+});

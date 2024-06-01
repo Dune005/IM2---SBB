@@ -4,101 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raucher-Reiseplaner - Kontakt</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        h1, h2, p {
-            text-align: center;
-        }
-        .navbar {
-            background-color: #333;
-            overflow: hidden;
-        }
-        .navbar a {
-            float: left;
-            display: block;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-        .contact-form {
-            text-align: center;
-            margin-top: 40px;
-        }
-        .contact-form input, .contact-form textarea {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .contact-form button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-        .contact-form button:hover {
-            background-color: #45a049;
-        }
-        .contact-info {
-            text-align: center;
-            margin: 40px 0;
-        }
-        iframe {
-            display: block;
-            margin: 0 auto;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            margin-top: 40px;
-        }
-        .social-links a {
-            margin: 0 10px;
-            color: white;
-            text-decoration: none;
-        }
-    </style>
+   
 </head>
+<link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
 <body>
     <div class="navbar">
-        <a href="about.html">Über uns</a>
-        <a href="contact.html">Kontakt</a>
+        <a href="index.html">Reiseplaner</a>
+        <a href="team.html">Über uns</a>
+        <a href="kontakt.html">Kontakt</a>
     </div>
 
-    <div class="container">
+    
         <h1>Raucher-Reiseplaner</h1>
 
-        <h2>Kontakt</h2>
-        <p>Haben Sie Fragen? Kontaktieren Sie uns gerne über das untenstehende Formular.</p>
+        
+        
 
+        <form id="trainForm" class="search-field">
         <div class="contact-form">
+            <h2 id="hoverText2">Kontakt</h2>
             <form action="#" method="post">
-                <input type="text" name="name" placeholder="Name" required><br>
-                <input type="email" name="email" placeholder="E-Mail" required><br>
-                <textarea name="message" rows="5" placeholder="Nachricht" required></textarea><br>
+                <input type="texttext" id="textname" name="name" placeholder="Name" required><br>
+                <input type="email" id="namename" name="email" placeholder="E-Mail" required><br>
+                <textarea name="message" id="messagename" rows="5" placeholder="Nachricht" required></textarea><br>
                 <button type="submit">Absenden</button>
             </form>
         </div>
+        </form>
+        
 
         <div class="contact-info">
             <h3>Öffnungszeiten</h3>
@@ -107,8 +43,8 @@
             <p>Sonntag: Geschlossen</p>
 
             <h3>Kontaktinformationen</h3>
-            <p>Telefon: +41 62 123 45 67</p>
-            <p>E-Mail: info@sbapp.ch</p>
+            <p>Telefon: +41 76 512 58 29</p>
+            <p>E-Mail: info@raucher-reiseplaner.ch</p>
 
             <h3>Adresse</h3>
             <p>Mattenweg 15, 5702 Niederlenz</p>
@@ -134,5 +70,6 @@
             <a href="link-zu-instagram">Instagram</a>
         </div>
     </footer>
+    <script src="js/script.js"></script>
 </body>
 </html>
