@@ -35,7 +35,8 @@ Den von kurzen Umsteigezeiten gepeinigten Rauchern wollen wir einen Mehrwert bie
 Zuerst erstellten wir auf Papier einen Plan um überhaupt zu wissen, welche Informationen wir wo abrufen müssen. Danach folgte das html Grundgerüst. Die wirkliche Arbeit begann im js-script: Die grösste Schwierigkeit bestand, aus dieser enormen Datenflut der SBB API die richtigen Daten zu fischen. Die Unterpunkte in der API sind oft gleich benannt, was dazu führte, dass wir zu Beginn oft die falschen Informationen kriegten. Der grösste Knackpunkt war das Anzeigen des Gleises, beziehungsweise die Umbennenung zu "Kante", sollte es sich um einen Bus handeln. Ebenso mussten wir nach dem Prinzip "kill your darlings" handeln und gewisse Informationen wieder rausstreichen, da sie shclicht nicht relevant waren für uns. Am Ende folgte die Stilisierung im CSS. Das darf man ohne zu leugnen las den gemütlichsten und befriedigsten Teil der Arbeit deklarieren, da es ab da so richtig an Form angenommen hat.
 
 Teamarbeit:
-xxx
+
+Style: Es war unser bestreben, die Seite möglichst "slick" und "clean" zu halten. Deshalb verzichteten wir auf grosse Spielereien und haben uns an einer professionellen Darstellung wie die des SBB Apps gehalten. Responsiv sind gewisse Schriften, Buttons und die div Boxen.
 
 Validierung: Nachdem alle Seiten erstellt waren, haben wir sie sorgfältig validiert. Wir haben sicherzustellen versucht, dass der HTML- und CSS-Code fehlerfrei und standardkonform ist.
 
