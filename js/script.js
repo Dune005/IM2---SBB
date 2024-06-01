@@ -20,7 +20,7 @@ function toggleFormVisibility() {
 
 async function getTrainConnections(from, to, datetime) {
     from = "st. gallen";
-    to = "chur";
+    to = "chur, city west";
     console.log(datetime);
     let params = {};
     if (datetime !== null) {

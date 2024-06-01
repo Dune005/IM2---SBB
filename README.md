@@ -2,7 +2,7 @@
 "Interaktive Medien II"
 Klasse MMP23c2
 Fachhochschule Graubünden
-xx. Monat 2024
+01. Juni 2024
 
 
 Willkommen im Repository von "Die besser SBB-App"
@@ -26,13 +26,13 @@ Unser Ziel ist es, dir eine benutzerfreundliche und informative Plattform zu bie
 
 
 ## Über das Projekt
-xxxx
+Der allerwichtigste Schritt war ohne Zweifel das definieren des Mehrwertes zur SBB App. Klar, man könnte einfach einen zweiten Fahrplan machen, aber dass kriegt man wohl kaum hin in dieser Zeit, noch bietet es einen Mehrwert. Deshalb sind wir überzeugt, dass das unsere Applikation mit den Rauchstopps einen grossen Mehrwert für uns Raucher bietet.
 
 ## Warum ist unsere App sinnvoll?
-xxxx
+Den von kurzen Umsteigezeiten gepeinigten Rauchern wollen wir einen Mehrwert bieten: Nie mehr wieder musst du dich durch unzählige Informationen auf der SBB App ackern um herauszufinden, wo du deinen langersehnten Glimmstängel geniesen kannst. Mit unserer App weisst du schon im Vorhinein, welche Verbindung dir deine Suchtstimulation an welchem Ort erlaubt. Tief durchatmen, Zigi geniesen, und hopps in den nächsten Bus oder Zug steigen.
 
 ## Vorgehen
-xxx
+Zuerst erstellten wir auf Papier einen Plan um überhaupt zu wissen, welche Informationen wir wo abrufen müssen. Danach folgte das html Grundgerüst. Die wirkliche Arbeit begann im js-script: Die grösste Schwierigkeit bestand, aus dieser enormen Datenflut der SBB API die richtigen Daten zu fischen. Die Unterpunkte in der API sind oft gleich benannt, was dazu führte, dass wir zu Beginn oft die falschen Informationen kriegten. Der grösste Knackpunkt war das Anzeigen des Gleises, beziehungsweise die Umbennenung zu "Kante", sollte es sich um einen Bus handeln. Ebenso mussten wir nach dem Prinzip "kill your darlings" handeln und gewisse Informationen wieder rausstreichen, da sie shclicht nicht relevant waren für uns. Am Ende folgte die Stilisierung im CSS. Das darf man ohne zu leugnen las den gemütlichsten und befriedigsten Teil der Arbeit deklarieren, da es ab da so richtig an Form angenommen hat.
 
 Teamarbeit:
 xxx
