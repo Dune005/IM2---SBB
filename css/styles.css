@@ -501,6 +501,7 @@ h3 {
     position: relative; /* Notwendig für die Positionierung des Alternativtextes */
     overflow: hidden; /* Verhindert das Überlaufen des alternativen Textes */
     margin-bottom: 0px;
+    max-width: 1200px;
 }
 
 .alt-text, .alt-text2 {
