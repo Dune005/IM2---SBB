@@ -1,5 +1,8 @@
 body {
     font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
     background-color: #f0f2f5;
@@ -404,18 +407,22 @@ h1, h2, p {
 .contact-info {
     text-align: center;
     margin: 40px 0;
+    border-top: none;
 }
 
 iframe {
     display: block;
     margin: 0 auto;
+    width: 50%;
+    height: 300px;
 }
+
 footer {
     background-color: #333;
     color: white;
     text-align: center;
     padding: 10px 0;
-    margin-top: 40px;
+    margin-top: auto;
 }
 
 .social-links a {
@@ -598,6 +605,13 @@ h3 {
 
     .team-member .image-container {
         flex-direction: column;
+    }
+
+    iframe {
+        display: block;
+        margin: 0 auto;
+        width: 80%;
+        height: 300px;
     }
 }
 

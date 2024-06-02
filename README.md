@@ -1,4 +1,4 @@
-# Die besser SBB-App
+# Der Reiseplaner für Raucher
 "Interaktive Medien II"
 Klasse MMP23c2
 Fachhochschule Graubünden
