@@ -19,8 +19,8 @@ function toggleFormVisibility() {
 }
 
 async function getTrainConnections(from, to, datetime) {
-    from = "st. gallen";
-    to = "chur, city west";
+    // from = "st. gallen";
+    // to = "chur, city west";
     console.log(datetime);
     let params = {};
     if (datetime !== null) {
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Erstellen und Stylen des alternativen Textes
     const altText = document.createElement('div');
     altText.classList.add('alt-text');
-    altText.textContent = 'Plane deine Reise mit dem Raucher-Reiseplaner und geniesse deine Rauchpausen an den richtigen Zwischenstopps.';
+    altText.textContent = 'Plane deine Reise mit genügend Zeit für Rauchpausen. Keine unnötigen Entzugserscheinungen mehr! Endlich stressfreie Reisen – mit dem Raucher-Reiseplaner kannst du deine Routenplanung so gestalten, dass du bei jedem Zwischenhalt genügend Zeit zum Entspannen bei einer Zigarette hast.';
 
     // Alternativtext zum h2-Element hinzufügen
     h2Element.appendChild(altText);

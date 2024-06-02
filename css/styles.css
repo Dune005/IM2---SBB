@@ -13,11 +13,6 @@ h1 {
     color: #EB0000;
 }
 
-@media (max-width: 800px) {
-    h1 {
-        font-size: calc(2em + 1.75vw);
-    }
-}
 
 h2 {
     text-align: justify;
@@ -81,7 +76,7 @@ button {
     font-weight: bold;
     font-size: 1rem;
     padding: 15px;
-    background-color: #A20013;
+    background-color: #EB0000;
     color: white;
     border: none;
     border-radius: 8px;
@@ -105,6 +100,8 @@ button:active {
     padding: 20px;
     background-color: #f0f2f5;
     justify-items: center;
+    max-width: 1200px; /* Maximale Breite von 1200px */
+    margin: 0 auto; /* Zentrieren des Containers */
 }
 
 .connection {
@@ -120,6 +117,18 @@ button:active {
     width: calc(100% - 40px);
     margin: 0 20px;
     position: relative;
+}
+
+.connection p {
+    text-align: left;
+    border-top: 1px solid #d6d6d6; /* Linie für andere p-Elemente */
+}
+
+.connection p.departure-station {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1.5rem; /* Ändern Sie die Schriftgröße nach Ihren Wünschen */
+    border-top: none; /* Entfernt die Linie über dem Element */
 }
 
 .connection:hover {
@@ -231,7 +240,7 @@ p {
 
 
 .button-80 {
-    width: 50%;
+    width: 200px;
     align-self: center;
     background: #EB0000;
     color: #fff;
@@ -295,13 +304,6 @@ p {
     margin: 20px auto;
 }
 
-@media (max-width: 300px) {
-    #toggleFormButton {
-        font-size: 12px; /* Kleinere Schriftgröße bei schmalen Buttons */
-        padding: 5px; /* Kleinere Polsterung bei schmalen Buttons */
-    }
-}
-
 #trainForm.hidden + #toggleFormButton {
     display: block;
 }
@@ -341,23 +343,17 @@ div.suggestion:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-@media (min-width: 1240px) {
-    #results {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
 .container {
-    
-    display: column;
-    flex-direction: row;
-    gap: 20px;
-    margin: 20px;
-    background-color: #ffffff;
+    display: flex; /* Flexbox aktivieren */
+    flex-direction: column; /* Reihenfolge der Kinder von oben nach unten */
+    gap: 20px; /* Abstand zwischen den Elementen */
+    margin: 20px auto; /* Zentrieren des Containers horizontal */
+    /* background-color: #ffffff; */
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* border: 1px solid #ddd;
+    border-radius: 12px; */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    max-width: 1200px; /* Maximale Breite des Containers */
 }
 
 h1, h2, p {
@@ -379,9 +375,14 @@ h1, h2, p {
     background-color: #ddd;
     color: black;
 }
+
 .contact-form {
     text-align: center;
+    position: relative; /* Ensure that the alt-text is positioned relative to the contact-form */
+    max-width: 1000px; /* Set the maximum width of the content */
+    margin: 0 auto; /* Center the content horizontally */
 }
+
 .contact-form input, .contact-form textarea {
     width: 80%;
     padding: 10px;
@@ -404,6 +405,7 @@ h1, h2, p {
     text-align: center;
     margin: 40px 0;
 }
+
 iframe {
     display: block;
     margin: 0 auto;
@@ -415,15 +417,27 @@ footer {
     padding: 10px 0;
     margin-top: 40px;
 }
+
 .social-links a {
     margin: 0 10px;
-    color: white;
+    color: white; /* Standardfarbe des Links */
     text-decoration: none;
+}
+
+.social-links a:visited {
+    color: white; /* Farbe des Links nach dem Besuch */
+}
+
+.social-links a:hover {
+    color: #EB0000; /* Farbe des Links beim Hover */
+}
+
+.social-links a:active {
+    color: white; /* Farbe des Links beim Klicken */
 }
 
 
 #textname {
-    display: center;
     flex-direction: column;
     gap: 20px;
     margin: 20px;
@@ -432,10 +446,8 @@ footer {
     border: 1px solid #ddd;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width:  (100% - 32px);
 }
 #namename  {
-    display: center;
     flex-direction: column;
     gap: 20px;
     margin: 20px;
@@ -447,7 +459,6 @@ footer {
 }
 
 #messagename {
-    display: center;
     flex-direction: column;
     gap: 20px;
     margin: 20px;
@@ -459,7 +470,6 @@ footer {
 }
 
 .untertitel {
-    text-align: center;
     font-size: calc(0.8rem + 0.8vw);
     color: black;
     padding: 20px;
@@ -481,6 +491,18 @@ h3 {
 
 }
 
+.geschichte {
+    text-align: justify; /* Text wird ausgerichtet */
+    text-align-last: left; /* Die letzte Zeile wird linksbündig ausgerichtet */
+    font-size: 15px;
+    font-weight: 700;
+    color: black;
+    padding: 8px;
+    position: relative; /* Notwendig für die Positionierung des Alternativtextes */
+    overflow: hidden; /* Verhindert das Überlaufen des alternativen Textes */
+    margin-bottom: 0px;
+}
+
 .alt-text, .alt-text2 {
     display: none;
     background-color: #f0f0f0;
@@ -489,24 +511,13 @@ h3 {
     position: absolute;
     z-index: 1000; /* Ensure it appears on top of other elements */
 }
-.contact-form {
-    position: relative; /* Ensure that the alt-text is positioned relative to the contact-form */
-}
 
-
-.team-member {
-    display: flex;
-    justify-content: center;
-    gap: 0px;
-    flex-direction: column;
-    text-align: left;
-}
 .team-member .image-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-    max-width: 800px; /* Maximalbreite des Bildes */
-    align-items: space-between;
+    max-width: 800px;
+    justify-content: space-between; /* Korrigierte Eigenschaft für die Ausrichtung */
     gap: 20px;
     margin: 20px;
     background-color: #ffffff;
@@ -515,11 +526,13 @@ h3 {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .team-member img {
     width: 150px; /* Breite des Bildes */
     height: auto; /* Seitenverhältnis des Bildes beibehalten */
     border-radius: 8px;
 }
+
 .team-member .text-content {
     display: flex;
     flex-direction: row;
@@ -527,14 +540,17 @@ h3 {
     align-items: flex-start;
 
 }
+
 .team-member h3 {
     margin: 0 0 10px 0;
     text-align: center;
     padding: 0%;
 }
+
 .team-member p {
     margin: 10px 0;
 }
+
 .social-links a {
     margin-right: 10px;
     text-decoration: none;
@@ -548,4 +564,45 @@ h3 {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+
+
+
+
+
+/* Medienabfrage für Bildschirme ab 1240 Pixel Breite */
+@media (min-width: 1240px) {
+    #results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* Medienabfrage für Bildschirme ab 800 Pixel Breite */
+@media (min-width: 800px) {
+    #trainForm.search-field {
+        width: 1000px;
+        margin: 20px auto; /* Zentrieren Sie das Suchfeld horizontal */
+    }
+
+}
+
+/* Medienabfrage für Bildschirme unter 800 Pixel Breite */
+@media (max-width: 800px) {
+
+    h1 {
+        font-size: calc(2em + 1.75vw);
+    }
+
+    .team-member .image-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 300px) {
+    #toggleFormButton {
+        font-size: 12px; /* Kleinere Schriftgröße bei schmalen Buttons */
+        padding: 5px; /* Kleinere Polsterung bei schmalen Buttons */
+    }
 }

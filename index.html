@@ -10,17 +10,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
 </head>
-<div class="navbar">
-    <a href="index.html">Reiseplaner</a>
-    <a href="team.html">Über uns</a>
-    <a href="kontakt.html">Kontakt</a>
-</div>
 <body>
+    <div class="navbar">
+        <a href="index.html">Reiseplaner</a>
+        <a href="team.html">Über uns</a>
+        <a href="kontakt.html">Kontakt</a>
+    </div>
+
     <h1>Der Reiseplaner für Raucher</h1>
 
     <div class="redbox">
         <form id="trainForm" class="search-field">
-            <h2 id="hoverText">Rauchen ist tödlich. <br> Umsteigen ist Gold.</h2>
+            <h2 id="hoverText">Rauchen ist tödlich. <br>Beim Umsteigen aber trotzdem Gold wert!</h2>
             <label class="boxtext" for="from">Sie befinden sich hier</label>
             <input type="text" id="from" name="from" autocomplete="off">
             <div id="popup1" class="popup">
@@ -34,24 +35,25 @@
                 <div id="to-suggestions" class="suggestions-container"></div> <!-- Container für Vorschläge des Zielorts -->
             </div>
             
-            
             <!-- Das ist die Abfahrtszeit mit Kalender -->
             <label class="boxtext" for="datetime">Dann geht's los</label>
             <input type="datetime-local" id="datetime" name="datetime">
             <button id="button" class="button-80">Suche</button>
         </form>
         <button id="toggleFormButton" class="button-80">Formular anzeigen</button>
-    
     </div>
+
     <div id="results"></div> <!-- Container für die Ergebnisse -->
-    <footer>
+
+    <!-- <footer>
         <p>&copy; 2024 Raucher-Reiseplaner. Alle Rechte vorbehalten.</p>
         <div class="social-links">
             <a href="link-zu-facebook">Facebook</a>
             <a href="link-zu-twitter">Twitter</a>
             <a href="link-zu-instagram">Instagram</a>
         </div>
-    </footer>
+    </footer> -->
+
     <script src="js/script.js"></script>
 </body>
 </html>
