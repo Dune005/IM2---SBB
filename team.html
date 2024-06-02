@@ -4,58 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Die bessere SBB App - Über uns</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        h1, h2, h3 {
-            text-align: center;
-        }
-        .navbar {
-            background-color: #333;
-            overflow: hidden;
-        }
-        .navbar a {
-            float: left;
-            display: block;
-            color: #f2f2f2;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-        .team-member {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .team-member img {
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            margin-top: 40px;
-        }
-        .social-links a {
-            margin: 0 10px;
-            color: white;
-            text-decoration: none;
-        }
+    
+     
     </style>
 </head>
 <div class="navbar">
@@ -64,51 +20,60 @@
     <a href="kontakt.html">Kontakt</a>
 </div>
 <body>
-    <div class="navbar">
-        <a href="index.html">Fahrplan</a>
-        <a href="about.html">Über uns</a>
-        <a href="contact.html">Kontakt</a>
-    </div>
 
+    <div class="contact-form">
     <div class="container">
-        <h1>Raucher-Reiseplaner</h1>
+        <h1>Unsere Geschichte</h1>
 
-        <h2>Unsere Geschichte</h2>
-        <p>Reisen für Raucher ist nicht immer ganz ohne Probleme verbunden. Oftmals kann man Stundenlang nicht rauchen oder ist sich unsicher ob der Stopp für eine Zigarette reicht oder nicht. Aus diesem Grund haben die drei nikotinabhängigen Studenten Aaron, Claudio und Simon den Raucher-reiseplaner entwickelt. Dieser zeigt dir ganz einfcah und unkompliziert bei deiner Verbindunggenügend Zeit für eine Zigarette beim Umsteigen hast oder nicht. </p>
+        
+        <h3>Reisen für Raucher ist nicht immer ganz ohne Probleme verbunden. Oftmals kann man Stundenlang nicht rauchen oder ist sich unsicher ob der Stopp für eine Zigarette reicht oder nicht. Aus diesem Grund haben die drei nikotinabhängigen Studenten Aaron, Claudio und Simon den Raucher-reiseplaner entwickelt. Dieser zeigt dir ganz einfcah und unkompliziert bei deiner Verbindunggenügend Zeit für eine Zigarette beim Umsteigen hast oder nicht. </h3>
 
-        <h2>Die Raucher</h2>
-
-        <div class="team-member">
-            <h3>Aaron IDK</h3>
-            <img src="link-zu-max-bild" alt="Max Mustermann">
-            <p>Aaron ist das kreative Köpfchen des Teams und für neue Konzepte und Innovationen verantwortlich. Durch seine Kreativität und unkonvenzionelle herangehensweise, kommt er immer wieder mit neuen Ideen, um das Leben von Rauchernzu verbessern.</p>
-            <div class="social-links">
-                <a href="link-zu-max-linkedin">LinkedIn</a>
-                <a href="link-zu-max-twitter">Twitter</a>
-            </div>
         </div>
 
-        <div class="team-member">
-            <h3>Claudio Riz</h3>
-            <img src="link-zu-sabine-bild" alt="Sabine Beispiel">
-            <p>Claudio ist die Ansprechperson für IT Probleme und deren Lösungen. Er ist der Kopf hinter der genialen Umsetzung des Raucher-Reiseplaners und hat so mit seinen IT Kentnissen, das Leben von unzähligen Rauchern verändert.</p>
-            <div class="social-links">
-                <a href="link-zu-sabine-linkedin">LinkedIn</a>
-                <a href="link-zu-sabine-twitter">Twitter</a>
-            </div>
-        </div>
+
+        <div class="contact-form">
+            <div class="kontaktcontainer">
+        <h1>Die Raucher</h1>
 
         <div class="team-member">
-            <h3>Simon Kuhn</h3>
-            <img src="link-zu-thomas-bild" alt="Thomas Muster">
-            <p>Simon Kuhn ist unser Marketingexperte und dazu zustaändig, das bahnbrechende Produkt unter die Leute zu bringen. Mit gezielten Marketingstrategien und Marktanalysen findet er die Bedürfnisse unserer Kundinnen und Kunden heraus.</p>
-            <div class="social-links">
-                <a href="link-zu-thomas-linkedin">LinkedIn</a>
-                <a href="link-zu-thomas-twitter">Twitter</a>
+            <div class="image-container">
+                <img src="bilder/aaron2.jpg" alt="Aaron"/>
+                <p class="textkontakt">Aaron ist das kreative Köpfchen des Teams und für neue Konzepte und Innovationen verantwortlich. Durch seine Kreativität und unkonventionelle Herangehensweise kommt er immer wieder mit neuen Ideen, um das Leben von Rauchern zu verbessern.</p>
             </div>
+            <div class="text-content">
+                <h3>Aaron IDK</h3>
+            </div>  
         </div>
-    </div>
 
+
+        <div class="team-member">
+            <div class="image-container">
+                <img src="bilder/simon2.png" alt="Aaron"/>
+                <p class="textkontakt">Simon Kuhn ist unser Marketingexperte und dazu zustaändig, das bahnbrechende Produkt unter die Leute zu bringen. Mit gezielten Marketingstrategien und Marktanalysen findet er die Bedürfnisse unserer Kundinnen und Kunden heraus.</p>
+            </div>
+            <div class="text-content">
+                <h3>Simon Kuhn</h3>                
+            </div>
+            
+        </div>
+        
+
+
+        <div class="team-member">
+            <div class="image-container">
+                <img src="bilder/claudio2.jpg" alt="Aaron"/>
+                <p class="textkontakt">Claudio ist die Ansprechperson für IT Probleme und deren Lösungen. Er ist der Kopf hinter der genialen Umsetzung des Raucher-Reiseplaners und hat so mit seinen IT Kentnissen, das Leben von unzähligen Rauchern verändert.</p>
+            </div>
+            <div class="text-content">
+                <h3>Claudio Riz</h3>                
+            </div>
+            
+        </div>
+
+
+
+       
+</div>
     <footer>
         <p>&copy; Raucher-Reiseplaner. Alle Rechte vorbehalten.</p>
         <div class="social-links">
